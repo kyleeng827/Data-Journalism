@@ -29,6 +29,8 @@ var chartGroup = svg.append("g")
 d3.csv("./assets/data/data.csv")
     .then(healthData => {
         // console.log(healthData)
+        // Step 1: Parse Data/Cast as numbers
+        // ==============================
         healthData.forEach(data => {
             data.poverty = +data.poverty
             data.obesity = +data.obesity
@@ -58,8 +60,17 @@ d3.csv("./assets/data/data.csv")
         chartGroup.append("g")
         .call(leftAxis);
 
-        // Step 5: Create Circles
+        // Step 5: Create Circles and Labels (Not sure why some labels are not displaying)
         // ==============================
+        var circlesLabel = chartGroup.selectAll("text")
+        .data(healthData)
+        .enter()
+        .append("text")
+        .text(d => d.abbr)
+        .attr("x", d => xLinearScale(d.poverty)-10)
+        .attr("y", d => yLinearScale(d.obesity)+5)
+        .attr("font-size", "14px");
+
         var circlesGroup = chartGroup.selectAll("circle")
         .data(healthData)
         .enter()
@@ -69,14 +80,6 @@ d3.csv("./assets/data/data.csv")
         .attr("r", "10")
         .attr("fill", "blue")
         .attr("opacity", ".50");
-
-        var circlesText = chartGroup.selectAll("text")
-        .data(healthData)
-        .enter()
-        .append("text")
-        .text(d => d.abbr)
-        .attr("x", d => xLinearScale(d.poverty)-10)
-        .attr("y", d => yLinearScale(d.obesity)+5);
 
         // Step 6: Initialize tool tip
         // ==============================
