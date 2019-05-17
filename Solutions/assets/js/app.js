@@ -60,13 +60,13 @@ d3.csv("./assets/data/data.csv")
         chartGroup.append("g")
         .call(leftAxis);
 
-        // Step 5: Create Circles and Labels (Not sure why some labels are not displaying)
+        // Step 5: Create Circles and Labels
         // ==============================
         var circlesLabel = chartGroup.selectAll("text")
         .data(healthData)
         .enter()
         .append("text")
-        .text(d => d.abbr)
+        .text(d => d.abbr) // some labels missing on display, not sure why
         .attr("x", d => xLinearScale(d.poverty)-10)
         .attr("y", d => yLinearScale(d.obesity)+5)
         .attr("font-size", "14px");
@@ -86,6 +86,8 @@ d3.csv("./assets/data/data.csv")
         var toolTip = d3.tip()
         .attr("class", "tooltip")
         .offset([80, -60])
+        .style("fill", "white") // not sure why font color is not changing
+        .style("background-color", "gray")
         .html(function(d) {
             return (`${d.abbr}<br>Poverty: ${d.poverty}%<br>Obesity: ${d.obesity}%`);
         });
